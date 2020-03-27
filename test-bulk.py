@@ -2,8 +2,9 @@ import time
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from common import connection_string, Buronan, tear_up, tear_down, generate_data_buronan
+from common import connection_string, tear_up, tear_down, generate_data_buronan, create_buronan_class
 
+Buronan = create_buronan_class()
 data_buronan = generate_data_buronan()
 
 tear_down(connection_string)
@@ -18,7 +19,7 @@ session = Session()
 start = time.time()
 daftar_buronan = []
 for row in data_buronan:
-    daftar_buronan.append(Buronan(name=row[0], email=row[1]))
+    daftar_buronan.append(Buronan(**row))
 session.add_all(daftar_buronan)
 session.commit()
 print("INSERT TIME\t: {} ms".format(time.time() - start))
